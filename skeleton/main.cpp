@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-std::string display_text = "This is a test";
+//std::string display_text = "This is a test";
 
 
 using namespace physx;
@@ -29,6 +29,8 @@ PxPvd*                  gPvd        = NULL;
 PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
+
+//RenderItem item(PxSphereGeometry sphere, PxVec3(0, 0, 0), PxVec4());
 
 
 // Initialize physics engine
@@ -54,6 +56,9 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
+
+	
+	CreateShape();
 	}
 
 
