@@ -57,34 +57,37 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	//Ej1: Crear una esfera en el 0, 0, 0
-	PxShape *shape = CreateShape(PxSphereGeometry(1)); //Creacion de la forma 
-	PxTransform* tr = new PxTransform(Vector3(0, 0, 0)); //Posicion de la esfera
-	Vector4 color(1, 1, 1, 1); //Color blanco y Alpha solido
-	RenderItem *render = new RenderItem(shape, tr, color); //Renderizacion de la forma con su tr y color
+	////Ej1: Crear una esfera en el 0, 0, 0
+	//PxShape *shape = CreateShape(PxSphereGeometry(1)); //Creacion de la forma 
+	//PxTransform* tr = new PxTransform(Vector3(0, 0, 0)); //Posicion de la esfera
+	//Vector4 color(1, 1, 1, 1); //Color blanco y Alpha solido
+	//RenderItem *render = new RenderItem(shape, tr, color); //Renderizacion de la forma con su tr y color
 
-	//Ej2: Crear ejes de coordenadas
+	////Ej2: Crear ejes de coordenadas
 
-	//Creamos las formas que representan los ejes
-	PxShape *sphereX = CreateShape(PxSphereGeometry(1));
-	PxShape *sphereY = CreateShape(PxSphereGeometry(1));
-	PxShape *sphereZ = CreateShape(PxSphereGeometry(1));
+	////Creamos las formas que representan los ejes
+	//PxShape *sphereX = CreateShape(PxSphereGeometry(1));
+	//PxShape *sphereY = CreateShape(PxSphereGeometry(1));
+	//PxShape *sphereZ = CreateShape(PxSphereGeometry(1));
 
-	//Definimos los tr de cada forma
-	int escalar = 10;
-	PxTransform* xTr = new PxTransform(1 * escalar, 0, 0);
-	PxTransform* yTr = new PxTransform(0, 1 * escalar, 0);
-	PxTransform* zTr = new PxTransform(0, 0, 1 * escalar);
+	////Definimos los tr de cada forma
+	//int escalar = 10;
+	//PxTransform* xTr = new PxTransform(1 * escalar, 0, 0);
+	//PxTransform* yTr = new PxTransform(0, 1 * escalar, 0);
+	//PxTransform* zTr = new PxTransform(0, 0, 1 * escalar);
 
-	//Definimos los colores para diferenciar los ejes
-	Vector4 colorX(1, 0, 0, 1);
-	Vector4 colorY(0, 1, 0, 1);
-	Vector4 colorZ(0, 0, 1, 1);
+	////Definimos los colores para diferenciar los ejes
+	//Vector4 colorX(1, 0, 0, 1);
+	//Vector4 colorY(0, 1, 0, 1);
+	//Vector4 colorZ(0, 0, 1, 1);
 
-	//Renderizamos los objetos
-	RenderItem* axisX = new RenderItem(sphereX, xTr, colorX);
-	RenderItem* axisY = new RenderItem(sphereY, yTr, colorY);
-	RenderItem* axisZ = new RenderItem(sphereZ, zTr, colorZ);
+	////Renderizamos los objetos
+	//RenderItem* axisX = new RenderItem(sphereX, xTr, colorX);
+	//RenderItem* axisY = new RenderItem(sphereY, yTr, colorY);
+	//RenderItem* axisZ = new RenderItem(sphereZ, zTr, colorZ);
+
+	//Ej3: Crear particula con vel cte
+
 }
 
 
