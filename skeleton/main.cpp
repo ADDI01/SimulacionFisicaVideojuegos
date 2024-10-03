@@ -54,7 +54,13 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-	}
+
+
+	PxShape *shape = CreateShape(PxSphereGeometry(6));
+	PxTransform* tr = new PxTransform(Vector3(0, 0, 0));
+	Vector4 color(1, 1, 1, 1);
+	RenderItem *render = new RenderItem(shape, tr, color);
+}
 
 
 // Function to configure what happens in each step of physics
