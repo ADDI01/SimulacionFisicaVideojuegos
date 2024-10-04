@@ -10,9 +10,9 @@ private:
 
 public:
     // Constructores
-    Vector3D() : x(0), y(0), z(0) {}
-    Vector3D(float x_, float y_, float z_) : x(x_), y(y_), z(z_) {}
-    Vector3D(const Vector3D& other) : x(other.x), y(other.y), z(other.z) {}
+    Vector3D() : x(0), y(0), z(0) {};
+    Vector3D(float x_, float y_, float z_) : x(x_), y(y_), z(z_) {};
+    Vector3D(const Vector3D& other) : x(other.x), y(other.y), z(other.z) {};
 
     // Getters
     float getX() const { return x; }

@@ -9,10 +9,11 @@
 #include "callbacks.hpp"
 
 #include "Vector3D.h"
+#include "Particle.h"
 
 #include <iostream>
 
-std::string display_text = "Ej2";
+std::string display_text = "Ej3";
 
 
 using namespace physx;
@@ -31,6 +32,8 @@ PxPvd*                  gPvd        = NULL;
 PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
+
+Particle* partX, *partY, *partZ;
 
 
 // Initialize physics engine
@@ -63,31 +66,34 @@ void initPhysics(bool interactive)
 	//Vector4 color(1, 1, 1, 1); //Color blanco y Alpha solido
 	//RenderItem *render = new RenderItem(shape, tr, color); //Renderizacion de la forma con su tr y color
 
-	////Ej2: Crear ejes de coordenadas
+	//Ej2: Crear ejes de coordenadas
 
-	////Creamos las formas que representan los ejes
-	//PxShape *sphereX = CreateShape(PxSphereGeometry(1));
-	//PxShape *sphereY = CreateShape(PxSphereGeometry(1));
-	//PxShape *sphereZ = CreateShape(PxSphereGeometry(1));
+	//Creamos las formas que representan los ejes
+	PxShape *sphereX = CreateShape(PxSphereGeometry(1));
+	PxShape *sphereY = CreateShape(PxSphereGeometry(1));
+	PxShape *sphereZ = CreateShape(PxSphereGeometry(1));
 
-	////Definimos los tr de cada forma
-	//int escalar = 10;
-	//PxTransform* xTr = new PxTransform(1 * escalar, 0, 0);
-	//PxTransform* yTr = new PxTransform(0, 1 * escalar, 0);
-	//PxTransform* zTr = new PxTransform(0, 0, 1 * escalar);
+	//Definimos los tr de cada forma
+	int escalar = 10;
+	PxTransform* xTr = new PxTransform(1 * escalar, 0, 0);
+	PxTransform* yTr = new PxTransform(0, 1 * escalar, 0);
+	PxTransform* zTr = new PxTransform(0, 0, 1 * escalar);
 
-	////Definimos los colores para diferenciar los ejes
-	//Vector4 colorX(1, 0, 0, 1);
-	//Vector4 colorY(0, 1, 0, 1);
-	//Vector4 colorZ(0, 0, 1, 1);
+	//Definimos los colores para diferenciar los ejes
+	Vector4 colorX(1, 0, 0, 1);
+	Vector4 colorY(0, 1, 0, 1);
+	Vector4 colorZ(0, 0, 1, 1);
 
-	////Renderizamos los objetos
-	//RenderItem* axisX = new RenderItem(sphereX, xTr, colorX);
-	//RenderItem* axisY = new RenderItem(sphereY, yTr, colorY);
-	//RenderItem* axisZ = new RenderItem(sphereZ, zTr, colorZ);
+	//Renderizamos los objetos
+	RenderItem* axisX = new RenderItem(sphereX, xTr, colorX);
+	RenderItem* axisY = new RenderItem(sphereY, yTr, colorY);
+	RenderItem* axisZ = new RenderItem(sphereZ, zTr, colorZ);
 
 	//Ej3: Crear particula con vel cte
-
+	Vector3 p(0, 0, 0), vX(10, 0, 0), vY(0, 10, 0), vZ(0, 0, 10);
+	partX = new Particle(p, vX);
+	partY = new Particle(p, vY);
+	partZ = new Particle(p, vZ);
 }
 
 
@@ -100,6 +106,10 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
+
+	partX->integrate(t); //Llamamos a la funcion de integracion de la particula
+	partY->integrate(t); //Llamamos a la funcion de integracion de la particula
+	partZ->integrate(t); //Llamamos a la funcion de integracion de la particula
 }
 
 // Function to clean data
@@ -118,6 +128,10 @@ void cleanupPhysics(bool interactive)
 	transport->release();
 	
 	gFoundation->release();
+
+	delete partX; //Llamamos a la destrcutora de Particle para deregistrarla
+	delete partY; //Llamamos a la destrcutora de Particle para deregistrarla
+	delete partZ; //Llamamos a la destrcutora de Particle para deregistrarla
 	}
 
 // Function called when a key is pressed
