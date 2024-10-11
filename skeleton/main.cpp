@@ -91,9 +91,15 @@ void initPhysics(bool interactive)
 
 	//Ej3: Crear particula con vel cte
 	Vector3 p(0, 0, 0), vX(10, 0, 0), vY(0, 10, 0), vZ(0, 0, 10);
-	partX = new Particle(p, vX);
+	/*partX = new Particle(p, vX);
 	partY = new Particle(p, vY);
-	partZ = new Particle(p, vZ);
+	partZ = new Particle(p, vZ);*/
+
+	//Ej3: Crear particulas con aceleracion a
+	Vector3 aX(0.2, 0, 0), aY(0, 0.2, 0), aZ(0, 0, 0.2);
+	partX = new Particle(p, vX, aX);
+	partY = new Particle(p, vY, aY);
+	partZ = new Particle(p, vZ, aZ);
 }
 
 

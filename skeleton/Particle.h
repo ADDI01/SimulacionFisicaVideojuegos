@@ -8,7 +8,7 @@ using namespace physx;
 class Particle {
 
 public:
-	Particle(Vector3 pos, Vector3 v/*, Vector3 a*/);
+	Particle(Vector3 pos, Vector3 v, Vector3 a);
 	~Particle();
 
 	void integrate(double t);
