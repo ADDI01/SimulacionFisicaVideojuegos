@@ -8,7 +8,7 @@ using namespace physx;
 class Particle {
 
 public:
-	Particle(Vector3 pos, Vector3 v, Vector3 a);
+	Particle(Vector3 pos, Vector3 v, Vector3 a, float d);
 	~Particle();
 
 	void integrate(double t);
@@ -16,6 +16,7 @@ public:
 private:
 	Vector3 vel; //Particle's velocity
 	Vector3 ac;	//Particle's acceleration
+	float damping; //Represents friction force
 	physx::PxTransform pose; //Particle's transform
 	RenderItem* renderItem;
 };

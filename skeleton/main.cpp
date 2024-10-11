@@ -13,7 +13,7 @@
 
 #include <iostream>
 
-std::string display_text = "Ej3";
+std::string display_text = "Ej3: R(X) V(Y) A(Z)";
 
 
 using namespace physx;
@@ -60,13 +60,14 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	////Ej1: Crear una esfera en el 0, 0, 0
+	/*--------------------------------------------PRACTICA 0----------------------------------------------*/
+	//Crear una esfera en el 0, 0, 0
 	//PxShape *shape = CreateShape(PxSphereGeometry(1)); //Creacion de la forma 
 	//PxTransform* tr = new PxTransform(Vector3(0, 0, 0)); //Posicion de la esfera
 	//Vector4 color(1, 1, 1, 1); //Color blanco y Alpha solido
 	//RenderItem *render = new RenderItem(shape, tr, color); //Renderizacion de la forma con su tr y color
 
-	//Ej2: Crear ejes de coordenadas
+	//Crear ejes de coordenadas
 
 	//Creamos las formas que representan los ejes
 	PxShape *sphereX = CreateShape(PxSphereGeometry(1));
@@ -89,17 +90,24 @@ void initPhysics(bool interactive)
 	RenderItem* axisY = new RenderItem(sphereY, yTr, colorY);
 	RenderItem* axisZ = new RenderItem(sphereZ, zTr, colorZ);
 
-	//Ej3: Crear particula con vel cte
+	/*--------------------------------------------PRACTICA 0----------------------------------------------*/
+	//Crear particula con vel cte
 	Vector3 p(0, 0, 0), vX(10, 0, 0), vY(0, 10, 0), vZ(0, 0, 10);
 	/*partX = new Particle(p, vX);
 	partY = new Particle(p, vY);
 	partZ = new Particle(p, vZ);*/
 
-	//Ej3: Crear particulas con aceleracion a
-	Vector3 aX(0.2, 0, 0), aY(0, 0.2, 0), aZ(0, 0, 0.2);
-	partX = new Particle(p, vX, aX);
+	//Crear particulas con aceleracion a
+	Vector3 aX(10, 0, 0), aY(0, 15, 0), aZ(0, 0, 5);
+	/*partX = new Particle(p, vX, aX);
 	partY = new Particle(p, vY, aY);
-	partZ = new Particle(p, vZ, aZ);
+	partZ = new Particle(p, vZ, aZ);*/
+
+	//Crear particulas con damping
+	float d = 0.4;
+	partX = new Particle(p, vX, aX, d);
+	partY = new Particle(p, vY, aY, d);
+	partZ = new Particle(p, vZ, aZ, d);
 }
 
 
