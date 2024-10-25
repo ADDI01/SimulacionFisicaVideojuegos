@@ -103,11 +103,11 @@ void initPhysics(bool interactive)
 	partY = new Particle(p, vY, aY);
 	partZ = new Particle(p, vZ, aZ);*/
 
-	//Crear particulas con damping
-	float d = 0.4;
-	partX = new Particle(p, vX, aX, d);
-	partY = new Particle(p, vY, aY, d);
-	partZ = new Particle(p, vZ, aZ, d);
+	//Crear particulas con damping y masa
+	float d = 0.4, m = 10.0;
+	partX = new Particle(p, vX, aX, d, m);
+	partY = new Particle(p, vY, aY, d, m);
+	partZ = new Particle(p, vZ, aZ, d, m);
 }
 
 
