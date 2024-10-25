@@ -11,9 +11,10 @@ public:
 	Particle(Vector3 pos, Vector3 v, Vector3 a, float d, float m);
 	~Particle();
 
-	void integrate(double t);
+	void addForce(const Vector3& force);
+	virtual void integrate(double t);
 
-private:
+protected:
 	Vector3 vel; //Particle's velocity
 	Vector3 ac;	//Particle's acceleration
 	float damping; //Represents friction force

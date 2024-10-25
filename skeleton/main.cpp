@@ -10,6 +10,7 @@
 
 #include "Vector3D.h"
 #include "Particle.h"
+#include "Proyectile.h"
 
 #include <iostream>
 
@@ -34,6 +35,19 @@ PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
 Particle* partX, *partY, *partZ;
+
+// Vector para almacenar proyectiles
+std::vector<Projectile*> projectiles;
+const float CANNON_PROJ_SIM_SPEED = 7.0f;
+const float CANNON_PROJ_REAL_SPEED = 250.f;
+
+const float TANK_PROJ_SIM_SPEED = 16.0f;
+const float TANK_PROJ_REAL_SPEED = 1800.0f;
+
+const float LASERGUN_PROJ_SIM_SPEED = 25.0f;
+const float LASERGUN_PROJ_REAL_SPEED = 300000000.0f;
+
+const float g = 9.8f;
 
 
 // Initialize physics engine
@@ -90,24 +104,34 @@ void initPhysics(bool interactive)
 	RenderItem* axisY = new RenderItem(sphereY, yTr, colorY);
 	RenderItem* axisZ = new RenderItem(sphereZ, zTr, colorZ);
 
-	/*--------------------------------------------PRACTICA 0----------------------------------------------*/
+	/*--------------------------------------------PRACTICA 1: parte 1----------------------------------------------*/
 	//Crear particula con vel cte
-	Vector3 p(0, 0, 0), vX(10, 0, 0), vY(0, 10, 0), vZ(0, 0, 10);
+	/*Vector3 p(0, 0, 0), vX(10, 0, 0), vY(0, 10, 0), vZ(0, 0, 10);*/
 	/*partX = new Particle(p, vX);
 	partY = new Particle(p, vY);
 	partZ = new Particle(p, vZ);*/
 
 	//Crear particulas con aceleracion a
-	Vector3 aX(10, 0, 0), aY(0, 15, 0), aZ(0, 0, 5);
+	/*Vector3 aX(10, 0, 0), aY(0, 15, 0), aZ(0, 0, 5);*/
 	/*partX = new Particle(p, vX, aX);
 	partY = new Particle(p, vY, aY);
 	partZ = new Particle(p, vZ, aZ);*/
 
 	//Crear particulas con damping y masa
-	float d = 0.4, m = 10.0;
+	/*float d = 0.4f, m = 10.0f;
 	partX = new Particle(p, vX, aX, d, m);
 	partY = new Particle(p, vY, aY, d, m);
-	partZ = new Particle(p, vZ, aZ, d, m);
+	partZ = new Particle(p, vZ, aZ, d, m);*/
+}
+
+/*--------------------------------------------PRACTICA 1: parte 2----------------------------------------------*/
+// Crear proyectiles y añadirlos al vector
+void shootProjectile(Vector3 position, Vector3 direction, float realSpeed, float simSpeed, float mass, float gravity, 
+		float damping, PxShape* shape) {
+
+	Vector3 ac(0, 0, 0);  // Inicialmente sin aceleración adicional
+	Projectile* proj = new Projectile(position, direction, realSpeed, simSpeed, ac, mass, gravity, damping, shape);
+	projectiles.push_back(proj);
 }
 
 
@@ -121,9 +145,14 @@ void stepPhysics(bool interactive, double t)
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 
-	partX->integrate(t); //Llamamos a la funcion de integracion de la particula
-	partY->integrate(t); //Llamamos a la funcion de integracion de la particula
-	partZ->integrate(t); //Llamamos a la funcion de integracion de la particula
+	//partX->integrate(t); //Llamamos a la funcion de integracion de la particula
+	//partY->integrate(t); //Llamamos a la funcion de integracion de la particula
+	//partZ->integrate(t); //Llamamos a la funcion de integracion de la particula
+
+	// Integrar todos los proyectiles activos
+	for (auto& proj : projectiles) {
+		proj->integrate(t);
+	}
 }
 
 // Function to clean data
@@ -143,24 +172,42 @@ void cleanupPhysics(bool interactive)
 	
 	gFoundation->release();
 
-	delete partX; //Llamamos a la destrcutora de Particle para deregistrarla
-	delete partY; //Llamamos a la destrcutora de Particle para deregistrarla
-	delete partZ; //Llamamos a la destrcutora de Particle para deregistrarla
+	//delete partX; //Llamamos a la destrcutora de Particle para deregistrarla
+	//delete partY; //Llamamos a la destrcutora de Particle para deregistrarla
+	//delete partZ; //Llamamos a la destrcutora de Particle para deregistrarla
+
+	for (auto& proj : projectiles) {
+		delete proj;
+	}
+	projectiles.clear();
+
 	}
 
 // Function called when a key is pressed
 void keyPress(unsigned char key, const PxTransform& camera)
 {
-	PX_UNUSED(camera);
+	//PX_UNUSED(camera);
 
+	Vector3 camPosition(camera.p.x, camera.p.y, camera.p.z);
+	Vector3 camDirection(camera.q.getBasisVector0().x, camera.q.getBasisVector0().y, camera.q.getBasisVector0().z);
+
+	//Practica Proyectiles
+	//Gsim = (Vsim * Vsim / Vreal * Vreal) * g real
+	//Reducir la velocidad de disparo para que esté en el rango de 5 a 25 m / s
 	switch(toupper(key))
 	{
-	//case 'B': break;
-	//case ' ':	break;
-	case ' ':
-	{
+	case '1':  //Bala de cañon: Velocidad 7 m/s
+		shootProjectile(camPosition, camDirection, CANNON_PROJ_SIM_SPEED, CANNON_PROJ_REAL_SPEED, 1.0f, g, 
+			0.99f, CreateShape(PxSphereGeometry(0.5f)));
 		break;
-	}
+	case '2':  //Bala de tanque: Velocidad 16 m/s
+		shootProjectile(camPosition, camDirection, TANK_PROJ_SIM_SPEED, TANK_PROJ_REAL_SPEED, 5.0f, g,
+			0.98f, CreateShape(PxSphereGeometry(1.0f)));
+		break;
+	case '3':  //Pistola láser: Velocidad 25 m/s
+		shootProjectile(camPosition, camDirection, LASERGUN_PROJ_SIM_SPEED, LASERGUN_PROJ_REAL_SPEED, 0.2f, g,
+			0.95f, CreateShape(PxSphereGeometry(0.3f)));
+		break;
 	default:
 		break;
 	}

@@ -4,12 +4,19 @@
 Particle::Particle(Vector3 pos, Vector3 v, Vector3 a, float d, float m) : pose(pos), vel(v), ac(a), damping(d), mass(m),
 				force(Vector3(0, 0, 0)){
 	pose = PxTransform(pos);
-	renderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), &pose, Vector4(1, 1, 1, 1));
+	renderItem = new RenderItem(CreateShape(PxSphereGeometry(10)), &pose, Vector4(1, 1, 1, 1));
 }
 
 Particle::~Particle() {
 	DeregisterRenderItem(renderItem);
 }
+
+void Particle::addForce(const Vector3& force) {
+	// Sumar la fuerza externa a la aceleración en función de la masa
+	Vector3 acceleration = force / mass;
+	ac = ac + acceleration;
+}
+
 void Particle::integrate(double t) {
 	//Movimiento basado en la 1a Ley de Newton
 
@@ -25,5 +32,3 @@ void Particle::integrate(double t) {
 	pose.p = pose.p + vel * t;
 }
 
-//Practica Proyectiles
-//Gsim = (Vsim * Vsim / Vreal * Vreal) * g real
